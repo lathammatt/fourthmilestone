@@ -13,13 +13,17 @@ angular
         templateUrl: 'partials/chat.html'
       })
   })
-  .controller('main', function($scope, $http) {
+  .controller('MainCtrl', function($scope, $http) {
     $http
       .get('/api/title')
       .then(({ data: { title } }) =>
         $scope.title = title
       )
   })
-  .controller('ChatCtrl', function($scope){
-
+  .controller('ChatCtrl', function($scope, $http) {
+    $http
+      .get('/api/messages')
+      .then(({ data: { messages } }) =>
+        $scope.messages = messages
+      )
   })
