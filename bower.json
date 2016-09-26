@@ -1,0 +1,20 @@
+{
+  "name": "fourthmilestone",
+  "description": "setup for start of fourth milestone - API with Node and Angular",
+  "main": "server/server.js",
+  "authors": [
+    "Matt Latham <latham75@gmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/lathammatt/fourthmilestone",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.5.8"
+  }
+}
