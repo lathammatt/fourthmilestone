@@ -5,8 +5,12 @@ angular
   .config($routeProvider => {
     $routeProvider
       .when('/', {
-        controller: 'main',
+        controller: 'MainCtrl',
         templateUrl: 'partials/main.html'
+      })
+      .when('/chat', {
+        controller: 'ChatCtrl',
+        templateUrl: 'partials/chat.html'
       })
   })
   .controller('main', function($scope, $http) {
@@ -15,4 +19,7 @@ angular
       .then(({ data: { title } }) =>
         $scope.title = title
       )
+  })
+  .controller('ChatCtrl', function($scope){
+
   })

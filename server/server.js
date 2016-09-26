@@ -10,7 +10,7 @@ const port = process.env.PORT || 7575
 app.use(express.static('client'))
 
 app.get('/api/title', (req, res) => {
-  res.json({ title: 'MEAN 101 from Node' })
+  res.json({ title: 'MEAN Chat' })
 })
 
 app.listen(port, () => console.log(`Listening on port: ${port}`))
