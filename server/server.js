@@ -2,7 +2,7 @@
 
 const express = require('express')
 const mongoose = require('mongoose')
-
+const { json } = require('body-parser')
 
 
 const app = express()
@@ -11,6 +11,7 @@ const PORT = process.env.PORT || 7575
 
 //middleware
 app.use(express.static('client'))
+app.use(json())
 
 app.get('/api/title', (req, res) => {
   res.json({ title: 'MEAN Chat' })
@@ -23,12 +24,20 @@ const Message = mongoose.model('message', {
 
 app.get('/api/messages', (req, res, err) => {
   Message
-  .find()
-  .then(messages => res.json({messages}))
-  .catch(err)
+    .find()
+    .then(messages => res.json({ messages }))
+    .catch(err)
+})
+
+app.post('/api/messages', (req, res, err) => {
+  Message
+    .create(req.body)
+    .then(msg => res.json(msg))
+    .catch(err)
 })
 
 mongoose.Promise = Promise
+
 mongoose.connect(MONGODB_URL, () => {
   app.listen(PORT, () => console.log(`Listening on port: ${PORT}`))
 })
