@@ -1,0 +1,23 @@
+{
+  "name": "fourthmilestone",
+  "version": "1.0.0",
+  "description": "setup for start of fourth milestone - API with Node and Angular",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lathammatt/fourthmilestone.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lathammatt/fourthmilestone/issues"
+  },
+  "homepage": "https://github.com/lathammatt/fourthmilestone#readme",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
+}
