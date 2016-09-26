@@ -6,10 +6,11 @@ const app = express()
 
 const port = process.env.PORT || 7575
 
-app.set('port', port)
-
 //middleware
 app.use(express.static('client'))
 
+app.get('/api/title', (req, res) => {
+  res.json({ title: 'MEAN 101 from Node' })
+})
 
 app.listen(port, () => console.log(`Listening on port: ${port}`))
