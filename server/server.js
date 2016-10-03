@@ -35,16 +35,17 @@ app.get('/api/messages', (req, res, err) => {
     .catch(err)
 })
 
-app.post('/api/messages', (req, res, err) => {
-  Message
-    .create(req.body)
-    .then(msg => {
-      io.emit('newMessage, msg')
-      return msg
-    })
-    .then(msg => res.status(201).json(msg))
-    .catch(err)
-})
+app.post('/api/messages', createMessage)
+//  (req, res, err) => {
+  // Message
+  //   .create(req.body)
+  //   .then(msg => {
+  //     io.emit('newMessage, msg')
+  //     return msg
+  //   })
+  //   .then(msg => res.status(201).json(msg))
+  //   .catch(err)
+// })
 
 app.use('/api', (req, res) =>
   res.status(404).send({ code: 404, status: 'Not Found' })
@@ -67,10 +68,27 @@ mongoose.connect(MONGODB_URL, () => {
 io.on('connection', socket => {
   console.log(`Socket connected: ${socket.id}`)
   socket.on('disconnect', () => console.log(`Socket disconnected: ${socket.id}`))
-  socket.on('postMessage', msg =>
-      Message
-        .create(msg)
-        .then(msg => io.emit('newMessage', msg))
-        .catch(console.error)
-    ) //when server hears postMessage from client-side, it will fire
+  socket.on('postMessage', createMessage)
+      // Message
+      //   .create(msg)
+      //   .then(msg => io.emit('newMessage', msg))
+      //   .catch(console.error)
+    // ) //when server hears postMessage from client-side, it will fire
 })
+
+function createMessage(reqOrMsg, res, next) {
+  const msg = reqOrMsg.body || reqOrMsg // depending on if msg has body or not like it app.post api/messages
+  Message
+    .create(msg)
+    .then(msg => {
+      io.emit('newMessage, msg')
+      return msg
+    })
+    .then(msg => res && res.status(201).json(msg)) // if res is 'undefined', this line will do nothing. Otherwise it will send status code
+    .catch(err => {
+      if (next) {
+        next && next(err)
+      }
+      console.error(err)
+    })
+};
