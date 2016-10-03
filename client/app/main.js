@@ -34,16 +34,27 @@ angular
         author: $scope.author,
         content: $scope.content,
       }
-
+      if (socket.connected) {
+        socket.emit('postMessage', msg)
+      }
+      //if socket connected, then emit. Otherwise, post via http
       $http
         .post('/api/messages', msg)
         .then(() => $scope.messages.push(msg))
         .catch(console.error)
     }
 
+    //populating initial messages
     $http
       .get('/api/messages')
       .then(({ data: { messages } }) =>
         $scope.messages = messages
       )
+
+    //receive new messages ('newMessage' from main.js)
+    socket.on('newMessage', msg => {
+      $scope.messages.push(msg)
+      $scope.$apply()
+    })
+
   })
