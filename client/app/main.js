@@ -1,8 +1,12 @@
 'use strict';
 
+const socket = io()
+socket.on('connect', () => console.log(`Socket connected: ${socket.id}`))
+socket.on('disconnect', () => console.log('Socket disconnected'))
+
 angular
   .module('mean101', ['ngRoute'])
-  .config($routeProvider => {
+  .config(($routeProvider, $locationProvider) => {
     $routeProvider
       .when('/', {
         controller: 'MainCtrl',
@@ -12,6 +16,10 @@ angular
         controller: 'ChatCtrl',
         templateUrl: 'partials/chat.html'
       })
+    $locationProvider.html5Mode({
+      enabled: true,
+      requireBase: false,
+    })
   })
   .controller('MainCtrl', function($scope, $http) {
     $http

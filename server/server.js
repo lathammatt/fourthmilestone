@@ -3,9 +3,15 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const { json } = require('body-parser')
+const { Server } = require('http')
+const socketio = require('socket.io')
+
 
 
 const app = express()
+const server = Server(app)
+const io = socketio(server)
+
 const MONGODB_URL = process.env.MONGODB_URL || 'mongodb://localhost:27017/meanchat'
 const PORT = process.env.PORT || 7575
 
@@ -36,8 +42,25 @@ app.post('/api/messages', (req, res, err) => {
     .catch(err)
 })
 
+app.use('/api', (req, res) =>
+  res.status(404).send({ code: 404, status: 'Not Found' })
+)
+
+app.use((req, res) =>
+  res.sendFile(process.cwd() + '/client/index.html')
+)
+
+app.use((err, req, res, next) =>
+  res.status(500).send({ code: 500, status: 'Internal Server Error', detail: err.stack })
+)
+
 mongoose.Promise = Promise
 
 mongoose.connect(MONGODB_URL, () => {
-  app.listen(PORT, () => console.log(`Listening on port: ${PORT}`))
+  server.listen(PORT, () => console.log(`Listening on port: ${PORT}`))
+})
+
+io.on('connection', socket => {
+  console.log(`Socket connected: ${socket.id}`)
+  socket.on('disconnect', () => console.log(`Socket disconnected: ${socket.id}`))
 })
